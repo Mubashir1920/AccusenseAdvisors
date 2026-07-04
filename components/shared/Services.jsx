@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "motion/react";
 import ServiceCard from "./ServiceCard";
 import { FiFileText, FiBarChart2, FiClock, FiMonitor, FiCheckSquare } from "react-icons/fi";
 import { FaBuildingColumns } from "react-icons/fa6";
@@ -50,28 +53,60 @@ const services = [
   },
 ];
 
-export default function Services() {
+const headVariants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+};
+
+const gridVariants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.1 } },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+};
+
+export default function Services({
+  eyebrow = "Our Services",
+  heading = (
+    <>
+      One partner, every
+      <br />
+      financial need
+    </>
+  ),
+  description = "Comprehensive services tailored to your goals — so you get clarity, compliance, and confidence in every outcome.",
+}) {
   return (
     <section id="services" className="py-24 lg:py-28">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="mx-auto mb-16 max-w-160 text-center">
-          <span className="eyebrow">Our Services</span>
-          <h2 className="mb-4 mt-4">
-            One partner, every
-            <br />
-            financial need
-          </h2>
-          <p className="mx-auto text-lg text-muted">
-            Comprehensive services tailored to your goals — so you get clarity, compliance, and confidence in
-            every outcome.
-          </p>
-        </div>
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={headVariants}
+          className="mx-auto mb-16 max-w-160 text-center"
+        >
+          <span className="eyebrow">{eyebrow}</span>
+          <h2 className="mb-4 mt-4">{heading}</h2>
+          <p className="mx-auto text-lg text-muted">{description}</p>
+        </motion.div>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={gridVariants}
+          className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+        >
           {services.map((service) => (
-            <ServiceCard key={service.number} {...service} />
+            <motion.div key={service.number} variants={cardVariants}>
+              <ServiceCard {...service} />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

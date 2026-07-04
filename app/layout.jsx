@@ -1,8 +1,9 @@
 import { Instrument_Sans, Manrope } from "next/font/google";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import SmoothScroll from "@/components/SmoothScroll";
+import Header from "@/components/shared/Header";
+import Footer from "@/components/shared/Footer";
+import SmoothScroll from "@/components/shared/SmoothScroll";
 import "./globals.css";
+import ScrollToTop from "@/components/shared/ScrollToTop";
 
 const instrumentSans = Instrument_Sans({
   variable: "--font-heading",
@@ -33,6 +34,7 @@ export default function RootLayout({ children }) {
           <Header />
           {children}
           <Footer />
+          <ScrollToTop />
         </SmoothScroll>
       </body>
     </html>

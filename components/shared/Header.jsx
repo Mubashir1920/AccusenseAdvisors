@@ -6,43 +6,50 @@ import Link from "next/link";
 import { FiChevronDown, FiMenu, FiX } from "react-icons/fi";
 import {
   FaCalculator,
-  FaBookOpen,
   FaFileInvoiceDollar,
   FaChartLine,
   FaBuildingColumns,
+  FaGears,
+  FaMagnifyingGlassChart,
 } from "react-icons/fa6";
 import logo from "@/public/ACCUSENSE-ADVISOR.png";
 
 const services = [
   {
-    name: "Accounting",
-    href: "/services/accounting",
+    name: "Accounting & Bookkeeping",
+    href: "/services/accounting-bookkeeping",
     icon: FaCalculator,
     description: "Accurate books you can always rely on.",
   },
   {
-    name: "Bookkeeping",
-    href: "/services/bookkeeping",
-    icon: FaBookOpen,
-    description: "Day-to-day records, handled end to end.",
-  },
-  {
-    name: "Tax",
-    href: "/services/tax",
+    name: "Taxation Services",
+    href: "/services/taxation",
     icon: FaFileInvoiceDollar,
     description: "Compliant filings, minimized liability.",
   },
   {
-    name: "Advisory Consultancy",
-    href: "/services/advisory-consultancy",
+    name: "Corporate & Secretarial",
+    href: "/services/corporate-secretarial",
+    icon: FaBuildingColumns,
+    description: "Formation, compliance, and governance.",
+  },
+  {
+    name: "Advisory Services",
+    href: "/services/advisory",
     icon: FaChartLine,
     description: "Strategic guidance behind every decision.",
   },
   {
-    name: "Corporate Services",
-    href: "/services/corporate-services",
-    icon: FaBuildingColumns,
-    description: "Formation, compliance, and governance.",
+    name: "ERP Consultancy",
+    href: "/services/erp-consultancy",
+    icon: FaGears,
+    description: "Systems tailored to how you operate.",
+  },
+  {
+    name: "Audit & Assurance",
+    href: "/services/audit-assurance",
+    icon: FaMagnifyingGlassChart,
+    description: "Independent assurance you can trust.",
   },
 ];
 
@@ -61,6 +68,7 @@ function NavLink({ href, children, onClick }) {
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
 
   const closeMobile = () => {
     setMobileOpen(false);
@@ -85,18 +93,33 @@ export default function Header() {
         <nav className="hidden items-center gap-10 md:flex">
           <NavLink href="/">Home</NavLink>
 
-          <div className="group relative">
-            <button className="flex items-center gap-1.5 text-sm font-medium text-[#1a1a1a] transition-colors duration-200 hover:text-accent">
+          <div
+            className="relative"
+            onMouseEnter={() => setServicesOpen(true)}
+            onMouseLeave={() => setServicesOpen(false)}
+          >
+            <Link
+              href="/services"
+              onClick={() => setServicesOpen(false)}
+              className="flex items-center gap-1.5 text-sm font-medium text-[#1a1a1a] transition-colors duration-200 hover:text-accent"
+            >
               Services
-              <FiChevronDown className="h-4 w-4 transition-transform duration-300 group-hover:rotate-180" />
-            </button>
+              <FiChevronDown
+                className={`h-4 w-4 transition-transform duration-300 ${servicesOpen ? "rotate-180" : ""}`}
+              />
+            </Link>
 
-            <div className="invisible absolute left-1/2 top-full -translate-x-1/2 translate-y-2 scale-95 pt-4 opacity-0 transition-all duration-300 ease-out group-hover:visible group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100">
+            <div
+              className={`absolute left-1/2 top-full -translate-x-1/2 pt-4 transition-all duration-300 ease-out ${
+                servicesOpen ? "visible translate-y-0 scale-100 opacity-100" : "invisible translate-y-2 scale-95 opacity-0"
+              }`}
+            >
               <div className="w-88 origin-top rounded-2xl border border-black/5 bg-white p-3 shadow-xl shadow-black/10">
                 {services.map((service) => (
                   <Link
                     key={service.name}
                     href={service.href}
+                    onClick={() => setServicesOpen(false)}
                     className="flex items-start gap-3 rounded-xl p-3 transition-colors duration-200 hover:bg-black/3"
                   >
                     <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
@@ -116,14 +139,14 @@ export default function Header() {
             </div>
           </div>
 
-          <NavLink href="/contact">Contact</NavLink>
           <NavLink href="/about">About Us</NavLink>
+          <NavLink href="/contact">Contact</NavLink>
         </nav>
 
         <div className="hidden md:block">
           <Link
             href="/contact"
-            className="btn inline-flex items-center justify-center bg-accent px-5 py-2.5 text-sm text-white transition-transform duration-200 hover:-translate-y-0.5"
+            className="btn inline-flex items-center justify-center bg-accent rounded-md px-5 py-2.5 text-sm text-white transition-transform duration-200 hover:-translate-y-0.5"
           >
             Leave a Message
           </Link>
@@ -177,17 +200,26 @@ export default function Header() {
               Home
             </Link>
 
-            <button
-              className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-[#1a1a1a] hover:bg-black/3"
-              onClick={() => setMobileServicesOpen((v) => !v)}
-            >
-              Services
-              <FiChevronDown
-                className={`h-4 w-4 transition-transform duration-300 ${
-                  mobileServicesOpen ? "rotate-180" : ""
-                }`}
-              />
-            </button>
+            <div className="flex items-center justify-between rounded-lg pr-1.5 text-sm font-medium text-[#1a1a1a] hover:bg-black/3">
+              <Link
+                href="/services"
+                className="flex-1 px-3 py-2.5"
+                onClick={closeMobile}
+              >
+                Services
+              </Link>
+              <button
+                aria-label="Toggle services submenu"
+                className="flex h-8 w-8 items-center justify-center rounded-lg hover:bg-black/5"
+                onClick={() => setMobileServicesOpen((v) => !v)}
+              >
+                <FiChevronDown
+                  className={`h-4 w-4 transition-transform duration-300 ${
+                    mobileServicesOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+            </div>
             <div
               className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-out ${
                 mobileServicesOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
@@ -225,7 +257,7 @@ export default function Header() {
 
             <Link
               href="/contact"
-              className="btn mt-4 inline-flex items-center justify-center bg-accent px-5 py-2.5 text-sm text-white transition-transform duration-200 hover:-translate-y-0.5"
+              className="btn mt-4 inline-flex items-center justify-center bg-accent px-5 py-2.5 text-sm text-white transition-transform duration-200 hover:-translate-y-0.5 rounded-md"
               onClick={closeMobile}
             >
               Leave a Message
