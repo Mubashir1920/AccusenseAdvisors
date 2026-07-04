@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accusense Advisor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1A1A1A;
+    --red:#D00B14;
+    --white:#FFFFFF;
+    --paper:#FAFAFA;
+    --line:rgba(26,26,26,0.10);
+    --muted:rgba(26,26,26,0.55);
+    --ink-soft:rgba(255,255,255,0.62);
+    --font-h:'Instrument Sans',system-ui,sans-serif;
+    --font-b:'Manrope',system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--font-b);
+    color:var(--ink);
+    background:var(--white);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4{font-family:var(--font-h);letter-spacing:-0.02em;line-height:1.05;font-weight:700}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 40px}
+  .eyebrow{
+    font-family:var(--font-h);font-weight:600;font-size:12px;
+    letter-spacing:0.18em;text-transform:uppercase;color:var(--red);
+    display:inline-flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:24px;height:1.5px;background:var(--red);display:inline-block}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.85);
+    backdrop-filter:blur(12px);border-bottom:1px solid var(--line);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:80px}
+  .brand{font-family:var(--font-h);font-weight:700;font-size:22px;letter-spacing:-0.01em}
+  .brand b{color:var(--red)}
+  .brand span{display:block;font-size:10px;font-weight:600;letter-spacing:0.42em;color:var(--muted);margin-top:-2px}
+  .nav-links{display:flex;gap:38px;align-items:center}
+  .nav-links a{
+    font-family:var(--font-h);font-weight:500;font-size:15px;color:var(--ink);
+    text-decoration:none;position:relative;padding:4px 0;transition:color .2s;
+  }
+  .nav-links a::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--red);transition:width .25s}
+  .nav-links a:hover{color:var(--red)}
+  .nav-links a:hover::after{width:100%}
+  .btn{
+    font-family:var(--font-h);font-weight:600;font-size:15px;cursor:pointer;
+    text-decoration:none;display:inline-flex;align-items:center;gap:9px;
+    transition:transform .18s, background .2s, color .2s;
+  }
+  .btn-red{background:var(--red);color:#fff;padding:13px 26px;border-radius:4px;border:1.5px solid var(--red)}
+  .btn-red:hover{transform:translateY(-2px)}
+  .btn-ghost{color:var(--ink);border:1.5px solid var(--ink);padding:13px 26px;border-radius:4px;background:transparent}
+  .btn-ghost:hover{background:var(--ink);color:#fff}
+  .btn-arrow svg{transition:transform .2s}
+  .btn:hover .btn-arrow svg{transform:translateX(4px)}
+
+  /* ---------- HERO (centered) ---------- */
+  .hero{position:relative;overflow:hidden;padding:118px 0 128px}
+  /* soft glow keeps center crisp, edges fade */
+  .hero::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(60% 65% at 50% 42%, #fff 0%, rgba(255,255,255,0.82) 45%, rgba(255,255,255,0) 100%);}
+  .hero-center{position:relative;z-index:3;max-width:1040px;margin:0 auto;text-align:center;display:flex;flex-direction:column;align-items:center}
+  .hero h1{font-size:clamp(2.4rem,4.6vw,3.7rem);font-weight:700;max-width:none;white-space:nowrap}
+  .hero h1 .red{color:var(--red)}
+  .hero .lede{font-size:1.18rem;color:var(--muted);max-width:38rem;margin:26px auto 8px;font-weight:400}
+  .hero-tag{font-family:var(--font-h);font-weight:600;font-size:13px;letter-spacing:0.04em;color:var(--ink);margin-bottom:26px;display:inline-flex;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);padding:8px 16px;border-radius:30px;box-shadow:0 2px 14px -6px rgba(26,26,26,0.12)}
+  .hero-tag .dot{width:7px;height:7px;background:var(--red);border-radius:50%;box-shadow:0 0 0 4px rgba(208,11,20,0.14)}
+  .hero-cta{display:flex;gap:16px;margin-top:40px;flex-wrap:wrap;justify-content:center}
+
+  /* faint ledger-grid background, fading toward edges */
+  .hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      linear-gradient(to right, rgba(26,26,26,0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(26,26,26,0.05) 1px, transparent 1px);
+    background-size:64px 64px;
+    -webkit-mask-image:radial-gradient(120% 80% at 50% 45%, #000 30%, transparent 78%);
+            mask-image:radial-gradient(120% 80% at 50% 45%, #000 30%, transparent 78%);
+  }
+  .hero-bg::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;
+    background:linear-gradient(to right, transparent, rgba(208,11,20,0.16) 50%, transparent);}
+
+  /* floating trust chips that frame the headline */
+  .hero-chips{position:absolute;inset:0;z-index:2;pointer-events:none}
+  .chip{
+    position:absolute;display:inline-flex;align-items:center;gap:9px;white-space:nowrap;
+    font-family:var(--font-h);font-weight:600;font-size:13.5px;color:var(--ink);
+    background:#fff;border:1px solid var(--line);padding:9px 15px 9px 11px;border-radius:30px;
+    box-shadow:0 12px 30px -12px rgba(26,26,26,0.22);
+  }
+  .chip .tick{width:19px;height:19px;flex:none;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center}
+  .chip .tick svg{width:11px;height:11px}
+  .chip-1{top:15%;left:3%;--rot:rotate(-4deg);animation:floaty 6s ease-in-out infinite}
+  .chip-2{top:18%;right:2%;--rot:rotate(4deg);animation:floaty 6s ease-in-out infinite 1.2s}
+  .chip-3{bottom:16%;left:6%;--rot:rotate(3deg);animation:floaty 6s ease-in-out infinite .6s}
+  @keyframes floaty{0%,100%{transform:translateY(0) var(--rot)}50%{transform:translateY(-9px) var(--rot)}}
+  @media(prefers-reduced-motion:reduce){.chip{animation:none!important}}
+
+  /* ---------- TRUST STRIP ---------- */
+  .trust{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--paper)}
+  .trust-grid{display:grid;grid-template-columns:repeat(3,1fr)}
+  .trust-item{display:flex;gap:18px;align-items:center;padding:38px 30px;position:relative}
+  .trust-item + .trust-item::before{content:"";position:absolute;left:0;top:26px;bottom:26px;width:1px;background:var(--line)}
+  .trust-ico{width:52px;height:52px;flex:none;border:1.5px solid var(--ink);border-radius:10px;display:flex;align-items:center;justify-content:center}
+  .trust-ico svg{width:26px;height:26px}
+  .trust-item h4{font-family:var(--font-h);font-size:1.12rem;font-weight:700}
+  .trust-item p{font-size:13.5px;color:var(--muted);font-weight:500;line-height:1.4}
+
+  /* ---------- SERVICES ---------- */
+  .services{padding:104px 0}
+  .services-head{max-width:640px;margin:0 auto 60px;text-align:center}
+  .services-head h2{font-size:clamp(2.2rem,4vw,3.2rem);margin:16px 0 18px}
+  .services-head p{color:var(--muted);font-size:1.05rem}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .card{
+    position:relative;background:#fff;border:1px solid var(--line);border-radius:12px;
+    padding:38px 32px 34px;overflow:hidden;transition:transform .25s, box-shadow .25s, border-color .25s;
+  }
+  .card::before{content:"";position:absolute;left:0;top:0;height:3px;width:0;background:var(--red);transition:width .3s}
+  .card:hover{transform:translateY(-6px);box-shadow:0 26px 50px -26px rgba(26,26,26,0.28);border-color:transparent}
+  .card:hover::before{width:100%}
+  .card-num{position:absolute;top:30px;right:32px;font-family:var(--font-h);font-weight:700;font-size:14px;color:var(--line)}
+  .card:hover .card-num{color:rgba(208,11,20,0.35)}
+  .card-ico{width:56px;height:56px;border-radius:12px;background:var(--ink);display:flex;align-items:center;justify-content:center;margin-bottom:24px;transition:background .25s}
+  .card:hover .card-ico{background:var(--red)}
+  .card-ico svg{width:28px;height:28px;stroke:#fff}
+  .card h3{font-size:1.28rem;margin-bottom:12px}
+  .card p{font-size:14.5px;color:var(--muted);font-weight:500;margin-bottom:22px}
+  .card-link{font-family:var(--font-h);font-weight:600;font-size:14px;color:var(--ink);display:inline-flex;align-items:center;gap:8px;text-decoration:none;transition:color .2s,gap .2s}
+  .card:hover .card-link{color:var(--red);gap:12px}
+  .card-link svg{width:15px;height:15px}
+
+  @media(max-width:1080px){
+    .chip-1{left:2%}.chip-2{right:1%}.chip-3{left:3%}
+  }
+  @media(max-width:960px){
+    .cards{grid-template-columns:1fr 1fr}
+    .nav-links{display:none}
+    .hero h1{white-space:normal}
+    .hero-chips{display:none}
+  }
+  @media(max-width:680px){
+    .wrap{padding:0 22px}
+    .hero{padding:80px 0 88px}
+    .trust-grid{grid-template-columns:1fr}
+    .trust-item + .trust-item::before{display:none}
+    .trust-item{border-top:1px solid var(--line)}
+    .cards{grid-template-columns:1fr}
+    .hero-bg{background-size:44px 44px}
+  }
+
+  /* ---------- WHY CHOOSE US ---------- */
+  .why{padding:104px 0;background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .why-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:72px;align-items:center}
+  .why-copy h2{font-size:clamp(2rem,3.6vw,2.9rem);margin:16px 0 18px}
+  .why-copy .lede{color:var(--muted);font-size:1.05rem;margin-bottom:30px}
+  .why-points{list-style:none;display:flex;flex-direction:column;gap:22px}
+  .why-point{display:flex;gap:16px;align-items:flex-start}
+  .why-point .wp-ico{width:44px;height:44px;flex:none;border-radius:10px;background:var(--ink);display:flex;align-items:center;justify-content:center}
+  .why-point .wp-ico svg{width:22px;height:22px;stroke:#fff}
+  .why-point h4{font-family:var(--font-h);font-size:1.08rem;font-weight:700;margin-bottom:4px}
+  .why-point p{font-size:14.5px;color:var(--muted);font-weight:500;line-height:1.5}
+  /* right visual — stacked 'proof' panel */
+  .why-visual{position:relative}
+  .why-card{position:relative;background:var(--ink);border-radius:18px;padding:40px;color:#fff;overflow:hidden;box-shadow:0 40px 80px -34px rgba(26,26,26,0.5)}
+  .why-card::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(130% 90% at 100% 0%, rgba(208,11,20,0.18), transparent 55%)}
+  .why-card .wc-big{font-family:var(--font-h);font-weight:700;font-size:3.4rem;letter-spacing:-0.03em;line-height:1}
+  .why-card .wc-big i{color:var(--red);font-style:normal}
+  .why-card .wc-cap{color:var(--ink-soft);font-size:14px;font-weight:500;margin-top:6px}
+  .why-divider{height:1px;background:rgba(255,255,255,0.12);margin:28px 0}
+  .why-mini{display:flex;justify-content:space-between;gap:20px}
+  .why-mini .wm{flex:1}
+  .why-mini .wm b{font-family:var(--font-h);font-weight:700;font-size:1.5rem;display:block}
+  .why-mini .wm span{color:var(--ink-soft);font-size:12.5px;font-weight:500}
+  .why-badge{position:absolute;bottom:-18px;left:-18px;background:#fff;color:var(--ink);border-radius:12px;padding:14px 18px;box-shadow:0 20px 40px -16px rgba(0,0,0,0.35);display:flex;gap:12px;align-items:center}
+  .why-badge .wb-ico{width:38px;height:38px;border-radius:8px;background:var(--red);display:flex;align-items:center;justify-content:center}
+  .why-badge .wb-ico svg{width:20px;height:20px;stroke:#fff}
+  .why-badge b{font-family:var(--font-h);font-size:14px;display:block;line-height:1.2}
+  .why-badge span{font-size:12px;color:var(--muted)}
+
+  /* ---------- REVIEWS ---------- */
+  .reviews{padding:104px 0;overflow:hidden}
+  .reviews-head{text-align:center;max-width:640px;margin:0 auto 54px}
+  .reviews-head h2{font-size:clamp(2rem,3.6vw,2.9rem);margin:16px 0 0}
+  .slider{position:relative;max-width:820px;margin:0 auto}
+  .slider-track{display:flex;transition:transform .55s cubic-bezier(.6,.05,.2,1)}
+  .slide{min-width:100%;padding:0 8px;box-sizing:border-box}
+  .review-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:48px 52px;text-align:center;position:relative}
+  .review-card .quote-mark{font-family:var(--font-h);font-weight:700;color:var(--red);font-size:4rem;line-height:.6;height:34px;display:block}
+  .review-stars{display:flex;gap:4px;justify-content:center;margin:8px 0 22px}
+  .review-stars svg{width:20px;height:20px;fill:var(--red)}
+  .review-text{font-family:var(--font-h);font-weight:500;font-size:1.32rem;line-height:1.5;letter-spacing:-0.01em;color:var(--ink);margin-bottom:30px}
+  .review-who{display:flex;align-items:center;gap:14px;justify-content:center}
+  .review-who .avatar{width:48px;height:48px;border-radius:50%;background:var(--ink);color:#fff;font-family:var(--font-h);font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center}
+  .review-who .rw-name{font-family:var(--font-h);font-weight:700;font-size:15px;text-align:left}
+  .review-who .rw-role{font-size:13px;color:var(--muted);text-align:left}
+  .slider-dots{display:flex;gap:10px;justify-content:center;margin-top:34px}
+  .dot-btn{width:9px;height:9px;border-radius:50%;background:var(--line);border:none;cursor:pointer;padding:0;transition:all .3s;position:relative;overflow:hidden}
+  .dot-btn.active{width:32px;border-radius:6px;background:rgba(208,11,20,0.2)}
+  .dot-btn.active::after{content:"";position:absolute;inset:0;background:var(--red);transform-origin:left;animation:dotfill 6s linear forwards}
+  @keyframes dotfill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  @media(prefers-reduced-motion:reduce){.dot-btn.active::after{animation:none;transform:scaleX(1)}}
+  .slider-arrows{display:flex;gap:12px;justify-content:center;margin-top:18px}
+  .arrow-btn{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+  .arrow-btn:hover{border-color:var(--ink);background:var(--ink)}
+  .arrow-btn:hover svg{stroke:#fff}
+  .arrow-btn svg{width:18px;height:18px;stroke:var(--ink)}
+
+  /* ---------- CTA ---------- */
+  .cta{padding:40px 0 104px}
+  .cta-panel{position:relative;background:var(--ink);border-radius:24px;padding:80px 40px;text-align:center;overflow:hidden}
+  .cta-panel::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(80% 120% at 50% -20%, rgba(208,11,20,0.28), transparent 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.04), transparent 40%);}
+  .cta-panel .cta-grid{position:absolute;inset:0;opacity:.5;
+    background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);
+    background-size:54px 54px;-webkit-mask-image:radial-gradient(80% 80% at 50% 50%,#000,transparent 75%);mask-image:radial-gradient(80% 80% at 50% 50%,#000,transparent 75%)}
+  .cta-inner{position:relative;z-index:1;max-width:640px;margin:0 auto}
+  .cta-inner .eyebrow{color:#fff}
+  .cta-inner .eyebrow::before{background:var(--red)}
+  .cta-inner h2{color:#fff;font-size:clamp(2.1rem,4vw,3.3rem);margin:18px 0 16px}
+  .cta-inner h2 .red{color:var(--red)}
+  .cta-inner p{color:rgba(255,255,255,0.7);font-size:1.1rem;margin-bottom:38px}
+  .btn-white{background:#fff;color:var(--ink);padding:15px 30px;border-radius:4px;border:1.5px solid #fff;font-size:15px}
+  .btn-white:hover{transform:translateY(-2px);background:var(--red);border-color:var(--red);color:#fff}
+  .cta-sub{margin-top:22px;font-size:14px;color:rgba(255,255,255,0.55);font-family:var(--font-h);font-weight:500}
+
+  @media(max-width:880px){
+    .why-grid{grid-template-columns:minmax(0,1fr);gap:48px}
+    .why-visual{max-width:480px;margin:0 auto;width:100%}
+    .review-card{padding:38px 28px}
+    .review-text{font-size:1.15rem}
+    .cta-panel{padding:60px 26px}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="wrap nav-inner">
+    <div class="brand">Accu<b>sense</b><span>ADVISOR</span></div>
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Services</a>
+      <a href="#">Insights</a>
+      <a href="#">Contact</a>
+    </div>
+    <a href="#" class="btn btn-red">Leave a Message</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <!-- faint ledger-grid background -->
+  <div class="hero-bg" aria-hidden="true"></div>
+
+  <!-- floating trust chips framing the headline -->
+  <div class="hero-chips" aria-hidden="true">
+    <span class="chip chip-1"><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 6"/></svg></span> Chartered &amp; regulated</span>
+    <span class="chip chip-2"><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 6"/></svg></span> Fixed-fee engagements</span>
+    <span class="chip chip-3"><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 6"/></svg></span> Direct access to your accountant</span>
+  </div>
+
+  <div class="wrap hero-center">
+    <div class="hero-tag"><span class="dot"></span> Precision you can count on</div>
+    <h1>Accounting built on precision,<br>advice built on <span class="red">trust.</span></h1>
+    <p class="lede">A chartered accounting practice for founders and businesses who want clean books, sharp advice, and complete peace of mind.</p>
+    <div class="hero-cta">
+      <a href="#" class="btn btn-red">Book a free consultation
+        <span class="btn-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a href="#" class="btn btn-ghost">Our services</a>
+    </div>
+  </div>
+</header>
+
+<!-- TRUST STRIP -->
+<section class="trust">
+  <div class="wrap trust-grid">
+    <div class="trust-item">
+      <div class="trust-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#D00B14" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 6.9H22l-5.8 4.3 2.2 6.8L12 16l-6.4 4 2.2-6.8L2 8.9h7.6z"/></svg></div>
+      <div><h4>Best Advisors</h4><p>Seasoned specialists guiding every decision.</p></div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#D00B14" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a6 6 0 100-12 6 6 0 000 12z"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5"/></svg></div>
+      <div><h4>Certified Professionals</h4><p>Credentialed, regulated, always accountable.</p></div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#D00B14" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-3-3.87M9 21v-2a4 4 0 013-3.87m0 0a4 4 0 100-8 4 4 0 000 8zm7-4a4 4 0 000-8"/></svg></div>
+      <div><h4>Trusted Clients</h4><p>Long-term partnerships built on results.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services">
+  <div class="wrap">
+    <div class="services-head">
+      <span class="eyebrow">Our Services</span>
+      <h2>One partner, every financial need</h2>
+      <p>Comprehensive services tailored to your goals — so you get clarity, compliance, and confidence in every outcome.</p>
+    </div>
+
+    <div class="cards">
+      <article class="card">
+        <span class="card-num">01</span>
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13l2 2 4-4"/></svg></div>
+        <h3>Accounting &amp; Bookkeeping</h3>
+        <p>Efficient financial management, so you can focus on the bigger picture while we handle the numbers.</p>
+        <a href="#" class="card-link">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </article>
+
+      <article class="card">
+        <span class="card-num">02</span>
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l3-3 3 3 5-6"/></svg></div>
+        <h3>Taxation Services</h3>
+        <p>Make the most of your finances and secure your future with comprehensive, compliant tax strategy.</p>
+        <a href="#" class="card-link">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </article>
+
+      <article class="card">
+        <span class="card-num">03</span>
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg></div>
+        <h3>Corporate &amp; Secretarial</h3>
+        <p>Stay compliant and run smoothly — avoid penalties and stay ahead of the competition.</p>
+        <a href="#" class="card-link">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </article>
+
+      <article class="card">
+        <span class="card-num">04</span>
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/><path d="M12 6v6l4 2"/></svg></div>
+        <h3>Advisory Services</h3>
+        <p>Gain the confidence to make informed decisions and an edge in an ever-changing market.</p>
+        <a href="#" class="card-link">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </article>
+
+      <article class="card">
+        <span class="card-num">05</span>
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4M7 8l3 3 4-5 3 3"/></svg></div>
+        <h3>ERP Consultancy</h3>
+        <p>Harness the power of ERP to revolutionize your business, tailored to how you actually operate.</p>
+        <a href="#" class="card-link">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </article>
+
+      <article class="card">
+        <span class="card-num">06</span>
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+        <h3>Audit &amp; Assurance</h3>
+        <p>Uncover the truth of your financials, so you can trust your future and decide with confidence.</p>
+        <a href="#" class="card-link">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section class="why">
+  <div class="wrap why-grid">
+    <div class="why-copy">
+      <span class="eyebrow">Why Accusense</span>
+      <h2>A practice that treats your business like its own</h2>
+      <p class="lede">We started this firm to do accounting the way it should be done — precise, transparent, and genuinely on your side. No jargon, no surprises, no chasing.</p>
+      <ul class="why-points">
+        <li class="why-point">
+          <span class="wp-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>
+          <div><h4>Precision, guaranteed</h4><p>Every figure checked and reconciled. Your books are always ready when you need them.</p></div>
+        </li>
+        <li class="why-point">
+          <span class="wp-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+          <div><h4>Responsive, always</h4><p>Talk directly to the accountant handling your work — not a call centre or a ticket queue.</p></div>
+        </li>
+        <li class="why-point">
+          <span class="wp-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 6.9H22l-5.8 4.3 2.2 6.8L12 16l-6.4 4 2.2-6.8L2 8.9h7.6z"/></svg></span>
+          <div><h4>Transparent pricing</h4><p>Fixed-fee engagements agreed upfront. You always know exactly what you're paying for.</p></div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="why-visual">
+      <div class="why-card">
+        <div class="wc-big"><i>100%</i></div>
+        <div class="wc-cap">Compliance-ready, filed on time, every time</div>
+        <div class="why-divider"></div>
+        <div class="why-mini">
+          <div class="wm"><b>Fixed</b><span>Transparent fees</span></div>
+          <div class="wm"><b>Direct</b><span>Personal contact</span></div>
+          <div class="wm"><b>Chartered</b><span>Regulated practice</span></div>
+        </div>
+      </div>
+      <div class="why-badge">
+        <span class="wb-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+        <div><b>Books balanced</b><span>Reviewed &amp; signed off</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews">
+  <div class="wrap">
+    <div class="reviews-head">
+      <span class="eyebrow" style="justify-content:center">Client Stories</span>
+      <h2>Trusted from day one</h2>
+    </div>
+
+    <div class="slider" id="slider">
+      <div class="slider-track" id="track">
+        <div class="slide">
+          <div class="review-card">
+            <span class="quote-mark">&rdquo;</span>
+            <div class="review-stars">
+              <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.8.6-5.1 4.5 1.5 6.7L12 17l-6 3.6 1.5-6.7L2.4 8.9l6.8-.6z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.8.6-5.1 4.5 1.5 6.7L12 17l-6 3.6 1.5-6.7L2.4 8.9l6.8-.6z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.8.6-5.1 4.5 1.5 6.7L12 17l-6 3.6 1.5-6.7L2.4 8.9l6.8-.6z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.8.6-5.1 4.5 1.5 6.7L12 17l-6 3.6 1.5-6.7L2.4 8.9l6.8-.6z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.8.6-5.1 4.5 1.5 6.7L12 17l-6 3.6 1.5-6.7L2.4 8.9l6.8-.6z"/></svg>
+            </div>
+            <p class="review-text">They took over our messy books and had everything reconciled within a fortnight. For the first time I actually understand my numbers.</p>
+            <div class="review-who">
+              <span class="avatar">SR</span>
+              <div><div class="rw-name">Sara Rahman</div><div class="rw-role">Founder, Loomcraft Studio</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide">
+          <div class="review-card">
+            <span class="quote-mark">&rdquo;</span>
+            <div class="review-stars">
+              <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.8.6-5.1 4.5 1.5 6.7L12 17l-6 3.6 1.5-6.7L2.4 8.9l6.8-.6z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.8.6-5.1 4.5 1.5 6.7L12 17l-6 3.6 1.5-6.7L2.4 8.9l6.8-.6z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.8.6-5.1 4.5 1.5 6.7L12 17l-6 3.6 1.5-6.7L2.4 8.9l6.8-.6z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.8.6-5.1 4.5 1.5 6.7L12 17l-6 3.6 1.5-6.7L2.4 8.9l6.8-.6z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.8.6-5.1 4.5 1.5 6.7L12 17l-6 3.6 1.5-6.7L2.4 8.9l6.8-.6z"/></svg>
+            </div>
+            <p class="review-text">Fixed fees meant no nasty surprises, and they filed our returns early. Responsive, sharp, and genuinely helpful whenever I call.</p>
+            <div class="review-who">
+              <span class="avatar">DK</span>
+              <div><div class="rw-name">Daniyal Khan</div><div class="rw-role">Director, Northline Logistics</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide">
+          <div class="review-card">
+            <span class="quote-mark">&rdquo;</span>
+            <div class="review-stars">
+              <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.8.6-5.1 4.5 1.5 6.7L12 17l-6 3.6 1.5-6.7L2.4 8.9l6.8-.6z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.8.6-5.1 4.5 1.5 6.7L12 17l-6 3.6 1.5-6.7L2.4 8.9l6.8-.6z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.8.6-5.1 4.5 1.5 6.7L12 17l-6 3.6 1.5-6.7L2.4 8.9l6.8-.6z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.8.6-5.1 4.5 1.5 6.7L12 17l-6 3.6 1.5-6.7L2.4 8.9l6.8-.6z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.8.6-5.1 4.5 1.5 6.7L12 17l-6 3.6 1.5-6.7L2.4 8.9l6.8-.6z"/></svg>
+            </div>
+            <p class="review-text">The advice went well beyond bookkeeping. They helped me restructure and I saved more in tax than their fee for the whole year.</p>
+            <div class="review-who">
+              <span class="avatar">AM</span>
+              <div><div class="rw-name">Ayesha Malik</div><div class="rw-role">Owner, Verde Interiors</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slider-dots" id="dots"></div>
+      <div class="slider-arrows">
+        <button class="arrow-btn" id="prev" aria-label="Previous review"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="arrow-btn" id="next" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="wrap">
+    <div class="cta-panel">
+      <div class="cta-grid"></div>
+      <div class="cta-inner">
+        <span class="eyebrow" style="justify-content:center">Get started</span>
+        <h2>Ready to put your books in <span class="red">safe hands?</span></h2>
+        <p>Book a free consultation and we'll show you exactly how we can help — no obligation, no jargon.</p>
+        <a href="#" class="btn btn-white">Book a free consultation
+          <span class="btn-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <div class="cta-sub">Or email us at hello@accusense.co — we reply within one business day.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var track=document.getElementById('track');
+  var slides=track.children.length;
+  var dotsWrap=document.getElementById('dots');
+  var i=0, timer;
+  for(var d=0; d<slides; d++){
+    var b=document.createElement('button');
+    b.className='dot-btn'+(d===0?' active':'');
+    b.setAttribute('aria-label','Go to review '+(d+1));
+    (function(idx){b.addEventListener('click',function(){go(idx);});})(d);
+    dotsWrap.appendChild(b);
+  }
+  var dots=dotsWrap.children;
+  function render(){
+    track.style.transform='translateX(-'+(i*100)+'%)';
+    for(var k=0;k<dots.length;k++){dots[k].classList.remove('active');}
+    // force reflow so the fill animation restarts
+    void dots[i].offsetWidth;
+    dots[i].classList.add('active');
+  }
+  function go(n){ i=(n+slides)%slides; render(); restart(); }
+  function next(){ go(i+1); }
+  function prev(){ go(i-1); }
+  function restart(){ clearInterval(timer); timer=setInterval(next,6000); }
+  document.getElementById('next').addEventListener('click',next);
+  document.getElementById('prev').addEventListener('click',prev);
+  render(); restart();
+})();
+</script>
+
+</body>
+</html>
