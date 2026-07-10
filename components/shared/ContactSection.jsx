@@ -199,7 +199,8 @@ export default function ContactSection() {
                         <option>Taxation Services</option>
                         <option>Corporate & Secretarial</option>
                         <option>Advisory Services</option>
-                        <option>Audit & Assurance</option>
+                        <option>ERP Consultancy</option>
+                        <option>Business Valuation</option>
                         <option>Something else</option>
                       </select>
                     </label>

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { FiEdit3, FiRefreshCw, FiBarChart2, FiSend } from "react-icons/fi";
+import { FiEdit3, FiRefreshCw, FiBarChart2, FiSend, FiCheck } from "react-icons/fi";
 
 const steps = [
   { n: "01", icon: FiEdit3, title: "Record", description: "Every transaction logged and categorized as it happens — nothing waits till month-end." },
@@ -11,10 +11,12 @@ const steps = [
 ];
 
 const chips = [
-  "Daily transaction recording",
-  "Bank & card reconciliation",
-  "Payroll-ready records",
-  "Cloud accounting setup (Xero / QuickBooks)",
+  "General ledger maintenance",
+  "Cash book maintenance",
+  "Financial record organization and document management",
+  "Monthly, quarterly, and annual bookkeeping reports",
+  "Preparation of monthly, quarterly, and annual financial statements",
+  "Accounts payable and receivables",
 ];
 
 const idealFor = ["Startups & founders", "Growing SMEs", "E-commerce sellers", "Service businesses"];
@@ -74,13 +76,19 @@ export default function AccountingBookkeepingInfo() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
             <h3 className="mb-4.5 text-[11.5px] font-semibold uppercase tracking-[0.14em] text-muted">What&apos;s included</h3>
-            <div className="flex flex-wrap gap-2.5">
+            <ul className="flex flex-col gap-3">
               {chips.map((chip) => (
-                <span key={chip} className="rounded-full border border-line bg-white px-4 py-2 text-[13.5px] font-semibold text-[#1a1a1a]">
-                  {chip}
-                </span>
+                <li
+                  key={chip}
+                  className="flex items-start gap-3 rounded-xl border border-line bg-white px-4 py-3.5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_36px_-24px_rgba(26,26,26,0.24)]"
+                >
+                  <span className="mt-px flex h-6.5 w-6.5 shrink-0 items-center justify-center rounded-full bg-accent/10">
+                    <FiCheck className="h-3.5 w-3.5 text-accent" strokeWidth={2.6} />
+                  </span>
+                  <span className="text-[14px] font-semibold leading-snug text-[#1a1a1a]">{chip}</span>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
 
           <div className="rounded-2xl border border-line bg-paper p-7">

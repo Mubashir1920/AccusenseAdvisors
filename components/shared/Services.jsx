@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import ServiceCard from "./ServiceCard";
-import { FiFileText, FiBarChart2, FiClock, FiMonitor, FiCheckSquare } from "react-icons/fi";
+import { FiFileText, FiBarChart2, FiClock, FiMonitor, FiTrendingUp } from "react-icons/fi";
 import { FaBuildingColumns } from "react-icons/fa6";
 
 const services = [
@@ -46,10 +46,10 @@ const services = [
   },
   {
     number: "06",
-    icon: FiCheckSquare,
-    title: "Audit & Assurance",
-    description: "Uncover the truth of your financials, so you can trust your future and decide with confidence.",
-    href: "/services/audit-assurance",
+    icon: FiTrendingUp,
+    title: "Business Valuation",
+    description: "Unlock the true value of your business, backed by independent and professional analysis.",
+    href: "/services/business-valuation",
   },
 ];
 

@@ -12,11 +12,12 @@ const serviceLinks = [
   { label: "Taxation Services", href: "/services/taxation" },
   { label: "Corporate & Secretarial", href: "/services/corporate-secretarial" },
   { label: "Advisory Services", href: "/services/advisory" },
-  { label: "Audit & Assurance", href: "/services/audit-assurance" },
+  { label: "Business Valuation", href: "/services/business-valuation" },
 ];
 
 const useFullLinks = [
   { label: "About us", href: "/about" },
+  { label: "Who We Help", href: "/who-we-help" },
   { label: "PSEB", href: "https://techdestination.com/" },
   { label: "FBR", href: "https://www.fbr.gov.pk/" },
   { label: "SECP", href: "https://www.secp.gov.pk/" },

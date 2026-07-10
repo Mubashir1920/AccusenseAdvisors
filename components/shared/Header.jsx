@@ -10,7 +10,7 @@ import {
   FaChartLine,
   FaBuildingColumns,
   FaGears,
-  FaMagnifyingGlassChart,
+  FaScaleBalanced,
 } from "react-icons/fa6";
 import logo from "@/public/ACCUSENSE-ADVISOR.png";
 
@@ -46,10 +46,10 @@ const services = [
     description: "Systems tailored to how you operate.",
   },
   {
-    name: "Audit & Assurance",
-    href: "/services/audit-assurance",
-    icon: FaMagnifyingGlassChart,
-    description: "Independent assurance you can trust.",
+    name: "Business Valuation",
+    href: "/services/business-valuation",
+    icon: FaScaleBalanced,
+    description: "Unlock the true value of your business.",
   },
 ];
 
@@ -87,7 +87,7 @@ export default function Header() {
       <header className="sticky top-0 z-50 border-b border-black/5 bg-white/90 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
         <Link href="/" className="flex items-center" onClick={closeMobile}>
-          <Image src={logo} alt="Accusense Advisors" priority className="h-20 w-auto" />
+          <Image src={logo} alt="Accusense Advisors" priority className="h-16 md:h-20  w-auto" />
         </Link>
 
         <nav className="hidden items-center gap-10 md:flex">
@@ -139,6 +139,7 @@ export default function Header() {
             </div>
           </div>
 
+          <NavLink href="/who-we-help">Who We Help</NavLink>
           <NavLink href="/about">About Us</NavLink>
           <NavLink href="/contact">Contact</NavLink>
         </nav>
@@ -241,11 +242,11 @@ export default function Header() {
             </div>
 
             <Link
-              href="/contact"
+              href="/who-we-help"
               className="rounded-lg px-3 py-2.5 text-sm font-medium text-[#1a1a1a] hover:bg-black/3"
               onClick={closeMobile}
             >
-              Contact
+              Who We Help
             </Link>
             <Link
               href="/about"
@@ -253,6 +254,13 @@ export default function Header() {
               onClick={closeMobile}
             >
               About Us
+            </Link>
+            <Link
+              href="/contact"
+              className="rounded-lg px-3 py-2.5 text-sm font-medium text-[#1a1a1a] hover:bg-black/3"
+              onClick={closeMobile}
+            >
+              Contact
             </Link>
 
             <Link
