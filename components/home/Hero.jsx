@@ -2,8 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion, useIsomorphicLayoutEffect } from "motion/react";
 import { FiArrowRight, FiCheck, FiStar, FiAward, FiUsers } from "react-icons/fi";
+
+const TILES_DESIGN_WIDTH = 460;
+const TILES_DESIGN_HEIGHT = 420;
 
 const trustItems = [
   { icon: FiStar, title: "Best Advisors", description: "Seasoned specialists guiding every decision." },
@@ -49,6 +52,23 @@ export default function Hero() {
   const reduceMotion = useReducedMotion();
   const reduceMotionRef = useRef(reduceMotion);
   const [balance, setBalance] = useState(0);
+
+  const tilesWrapRef = useRef(null);
+  const [tilesScale, setTilesScale] = useState(1);
+
+  useIsomorphicLayoutEffect(() => {
+    const el = tilesWrapRef.current;
+    if (!el) return;
+
+    const updateScale = () => {
+      setTilesScale(Math.min(1, el.offsetWidth / TILES_DESIGN_WIDTH));
+    };
+
+    updateScale();
+    const observer = new ResizeObserver(updateScale);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     reduceMotionRef.current = reduceMotion;
@@ -150,8 +170,16 @@ export default function Hero() {
           </motion.div>
 
           <div className="flex justify-center">
-            <div className="relative h-105 w-full max-w-115 origin-top scale-100 max-[680px]:-mb-7.5 min-[421px]:max-[680px]:h-90 min-[421px]:max-[680px]:scale-[0.82] max-[420px]:h-80 max-[420px]:scale-[0.72]">
-              {/* balance tile */}
+            <div
+              ref={tilesWrapRef}
+              className="relative w-full max-w-115"
+              style={{ height: TILES_DESIGN_HEIGHT * tilesScale }}
+            >
+              <div
+                className="absolute left-0 top-0 h-105 w-115"
+                style={{ transform: `scale(${tilesScale})`, transformOrigin: "top left" }}
+              >
+                {/* balance tile */}
               <Tile
                 className="left-0 top-0 z-2 w-75 px-6 py-5.5"
                 delay={0.05}
@@ -257,6 +285,7 @@ export default function Hero() {
                 </div>
                 <div className="mt-1 text-[12.5px] font-medium text-muted">On-time filings</div>
               </Tile>
+            </div>
             </div>
           </div>
         </div>
