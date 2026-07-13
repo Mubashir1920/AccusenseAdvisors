@@ -98,20 +98,22 @@ export default function Footer() {
             Let&apos;s balance
             <br />
             your <span className="text-accent">books.</span>
-            <span className="mt-4.5 block max-w-[34ch] text-[clamp(1rem,1.6vw,1.15rem)]! font-medium! leading-[1.5] tracking-normal! text-[#1a1a1a]/60">
+            <span className="mt-4.5 block max-w-[34ch] text-[clamp(1rem,1.6vw,1.15rem)]! font-medium! leading-normal tracking-normal! text-[#1a1a1a]/60">
               Book a free consultation and see how straightforward good accounting can be.
             </span>
           </h4>
 
-          <Link
-            href="/contact"
-            className="btn w-full shrink-0 items-center justify-center gap-3 whitespace-nowrap rounded-md bg-accent px-7.5 py-4.5 text-base text-white transition-all duration-200 hover:-translate-y-0.75 hover:bg-[#e11020] min-[681px]:flex min-[681px]:w-auto"
-          >
-            <span className="flex items-center justify-center gap-3">
-              Book a free call
-              <FiArrowRight className="h-[18px] w-[18px]" />
-            </span>
-          </Link>
+          <div className="w-full shrink-0 min-[681px]:w-auto">
+            <Link
+              href="/contact"
+              className="btn flex w-full items-center justify-center gap-3 whitespace-nowrap rounded-md bg-accent px-7.5 py-4.5 text-base text-white transition-all duration-200 hover:-translate-y-0.75 hover:bg-[#e11020] min-[681px]:w-auto"
+            >
+              <span className="flex items-center justify-center gap-3">
+                Book a free call
+                <FiArrowRight className="h-4.5 w-4.5" />
+              </span>
+            </Link>
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-9 py-14 min-[901px]:grid-cols-[1.5fr_1fr_1fr_1fr] min-[901px]:gap-10">
@@ -142,19 +144,19 @@ export default function Footer() {
           <div>
             <FooterHeading>Get in touch</FooterHeading>
             <ul className="flex flex-col gap-3.5">
-              <li className="flex items-start gap-2.5 text-[14.5px] font-medium leading-[1.5] text-[#1a1a1a]/60">
+              <li className="flex items-start gap-2.5 text-[14.5px] font-medium leading-normal text-[#1a1a1a]/60">
                 <FiPhone className="mt-0.75 h-4 w-4 shrink-0 text-accent" />
                 <a href="tel:+920000000000" className="transition-colors duration-200 hover:text-[#1a1a1a]">
                   +92 000 000 0000
                 </a>
               </li>
-              <li className="flex items-start gap-2.5 text-[14.5px] font-medium leading-[1.5] text-[#1a1a1a]/60">
+              <li className="flex items-start gap-2.5 text-[14.5px] font-medium leading-normal text-[#1a1a1a]/60">
                 <FiMail className="mt-0.75 h-4 w-4 shrink-0 text-accent" />
                 <a href="mailto:hello@accusense.co" className="transition-colors duration-200 hover:text-[#1a1a1a]">
                   hello@accusense.co
                 </a>
               </li>
-              <li className="flex items-start gap-2.5 text-[14.5px] font-medium leading-[1.5] text-[#1a1a1a]/60">
+              <li className="flex items-start gap-2.5 text-[14.5px] font-medium leading-normal text-[#1a1a1a]/60">
                 <FiMapPin className="mt-0.75 h-4 w-4 shrink-0 text-accent" />
                 <span>Lahore, Pakistan</span>
               </li>

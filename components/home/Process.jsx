@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { motion } from "motion/react";
 import { FiPhone, FiEdit3, FiFileText, FiCheckCircle, FiArrowRight } from "react-icons/fi";
 
 const steps = [
@@ -24,6 +27,15 @@ const steps = [
   },
 ];
 
+const EASE = [0.22, 1, 0.36, 1];
+
+const intro = { hidden: {}, show: { transition: { staggerChildren: 0.12 } } };
+const introItem = { hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } } };
+const track = { hidden: {}, show: { transition: { staggerChildren: 0.15, delayChildren: 0.25 } } };
+const line = { hidden: { scaleX: 0 }, show: { scaleX: 1, transition: { duration: 0.9, ease: EASE } } };
+const step = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE } } };
+const footer = { hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } } };
+
 export default function Process() {
   return (
     <section className="relative overflow-hidden py-24 lg:py-28">
@@ -37,26 +49,44 @@ export default function Process() {
       />
 
       <div className="relative z-1 mx-auto max-w-7xl px-6">
-        <div className="mx-auto mb-18 max-w-170 text-center">
-          <span className="eyebrow justify-center">How it works</span>
-          <h2 className="mb-4 mt-4">Getting started is simple</h2>
-          <p className="text-[1.08rem] text-muted">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={intro}
+          className="mx-auto mb-18 max-w-170 text-center"
+        >
+          <motion.span variants={introItem} className="eyebrow justify-center">
+            How it works
+          </motion.span>
+          <motion.h2 variants={introItem} className="mb-4 mt-4">
+            Getting started is simple
+          </motion.h2>
+          <motion.p variants={introItem} className="text-[1.08rem] text-muted">
             No lengthy onboarding, no confusing paperwork. Four steps from first hello to books fully handled.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
-        <div className="relative grid max-w-110 grid-cols-1 mx-auto min-[861px]:max-w-none min-[861px]:grid-cols-4 min-[861px]:gap-7">
-          <div
-            className="absolute top-8.5 left-[12.5%] right-[12.5%] z-0 hidden h-0.5 bg-[repeating-linear-gradient(to_right,var(--line)_0_8px,transparent_8px_16px)] min-[861px]:block"
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={track}
+          className="relative grid max-w-110 grid-cols-1 mx-auto min-[861px]:max-w-none min-[861px]:grid-cols-4 min-[861px]:gap-7"
+        >
+          <motion.div
+            variants={line}
+            className="absolute top-8.5 left-[12.5%] right-[12.5%] z-0 hidden h-0.5 origin-left bg-[repeating-linear-gradient(to_right,var(--line)_0_8px,transparent_8px_16px)] min-[861px]:block"
             aria-hidden="true"
           />
 
-          {steps.map((step, i) => {
+          {steps.map((s, i) => {
             const isStart = i === 0;
             const isLast = i === steps.length - 1;
             return (
-              <div
-                key={step.title}
+              <motion.div
+                key={s.title}
+                variants={step}
                 className="group relative z-1 flex items-start gap-5.5 pb-10 min-[861px]:flex-col min-[861px]:items-center min-[861px]:pb-0 min-[861px]:text-center"
               >
                 {!isLast && (
@@ -84,18 +114,24 @@ export default function Process() {
                 </div>
 
                 <div className="pt-1.5 min-[861px]:pt-0">
-                  <step.icon className="mb-2.5 h-6.5 w-6.5 text-accent min-[861px]:mx-auto min-[861px]:mb-3.5" strokeWidth={1.8} />
-                  <h3 className="mb-2.5 text-[1.22rem]!">{step.title}</h3>
+                  <s.icon className="mb-2.5 h-6.5 w-6.5 text-accent min-[861px]:mx-auto min-[861px]:mb-3.5" strokeWidth={1.8} />
+                  <h3 className="mb-2.5 text-[1.22rem]!">{s.title}</h3>
                   <p className="text-[14.5px] font-medium text-muted min-[861px]:mx-auto min-[861px]:max-w-[24ch]">
-                    {step.description}
+                    {s.description}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
 
-        <div className="mt-18 text-center">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={footer}
+          className="mt-18 text-center"
+        >
           <span className="mb-4 block text-sm font-medium text-muted">
             No obligation. We&apos;ll only suggest what you actually need.
           </span>
@@ -106,7 +142,7 @@ export default function Process() {
             Book your free call
             <FiArrowRight className="h-4 w-4" />
           </Link>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

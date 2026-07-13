@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "motion/react";
 import { FiCheckSquare, FiClock, FiStar, FiCheck } from "react-icons/fi";
 
 const points = [
@@ -24,23 +27,39 @@ const stats = [
   { label: "Chartered", caption: "Regulated practice" },
 ];
 
+const EASE = [0.22, 1, 0.36, 1];
+
+const intro = { hidden: {}, show: { transition: { staggerChildren: 0.12 } } };
+const introItem = { hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } } };
+const pointsContainer = { hidden: {}, show: { transition: { staggerChildren: 0.1, delayChildren: 0.15 } } };
+const pointItem = { hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE } } };
+const panel = { hidden: { opacity: 0, y: 28, scale: 0.96 }, show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.7, ease: EASE } } };
+const badge = { hidden: { opacity: 0, y: 14, scale: 0.9 }, show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, delay: 0.4, ease: EASE } } };
+
 export default function WhyChooseUs() {
   return (
     <section className="border-y border-line bg-paper py-24 lg:py-28">
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 lg:grid-cols-2 lg:gap-18">
-        <div>
-          <span className="eyebrow">Why Accusense</span>
-          <h2 className="mb-4 mt-4 text-[clamp(2rem,3.6vw,2.9rem)]!">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={intro}
+        >
+          <motion.span variants={introItem} className="eyebrow">
+            Why Accusense
+          </motion.span>
+          <motion.h2 variants={introItem} className="mb-4 mt-4 text-[clamp(2rem,3.6vw,2.9rem)]!">
             A practice that treats your business like its own
-          </h2>
-          <p className="mb-8 text-[1.05rem] text-muted">
+          </motion.h2>
+          <motion.p variants={introItem} className="mb-8 text-[1.05rem] text-muted">
             We started this firm to do accounting the way it should be done — precise, transparent, and
             genuinely on your side. No jargon, no surprises, no chasing.
-          </p>
+          </motion.p>
 
-          <ul className="flex flex-col gap-6">
+          <motion.ul variants={pointsContainer} className="flex flex-col gap-6">
             {points.map((point) => (
-              <li key={point.title} className="flex items-start gap-4">
+              <motion.li key={point.title} variants={pointItem} className="flex items-start gap-4">
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] bg-[#1a1a1a]">
                   <point.icon className="h-[22px] w-[22px] text-white" strokeWidth={1.8} />
                 </span>
@@ -48,13 +67,19 @@ export default function WhyChooseUs() {
                   <h4 className="mb-1 text-[1.08rem]!">{point.title}</h4>
                   <p className="text-[14.5px] font-medium leading-[1.5] text-muted">{point.description}</p>
                 </div>
-              </li>
+              </motion.li>
             ))}
-          </ul>
-        </div>
+          </motion.ul>
+        </motion.div>
 
         <div className="relative mx-auto w-full max-w-[480px] lg:max-w-none">
-          <div className="relative overflow-hidden rounded-[18px] bg-[#1a1a1a] p-10 text-white shadow-[0_40px_80px_-34px_rgba(26,26,26,0.5)]">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={panel}
+            className="relative overflow-hidden rounded-[18px] bg-[#1a1a1a] p-10 text-white shadow-[0_40px_80px_-34px_rgba(26,26,26,0.5)]"
+          >
             <div
               className="pointer-events-none absolute inset-0"
               style={{
@@ -78,9 +103,15 @@ export default function WhyChooseUs() {
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="absolute -bottom-[40px] -left-[18px] flex items-center gap-3 rounded-xl bg-white px-[18px] py-[14px] text-[#1a1a1a] shadow-[0_20px_40px_-16px_rgba(0,0,0,0.35)]">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={badge}
+            className="absolute -bottom-10 -left-4.5 flex items-center gap-3 rounded-xl bg-white px-4.5 py-3.5 text-[#1a1a1a] shadow-[0_20px_40px_-16px_rgba(0,0,0,0.35)]"
+          >
             <span className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-lg bg-accent">
               <FiCheck className="h-5 w-5 text-white" strokeWidth={2} />
             </span>
@@ -88,7 +119,7 @@ export default function WhyChooseUs() {
               <b className="block text-sm leading-tight">Books balanced</b>
               <span className="text-xs text-muted">Reviewed & signed off</span>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
